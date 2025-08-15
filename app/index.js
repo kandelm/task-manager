@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   FlatList,
+  Image,
   Pressable,
   StyleSheet,
   Text,
@@ -13,9 +14,7 @@ export default function TaskManager() {
   const [tasks, setTasks] = useState([]);
   const [text, setText] = useState('');
 
-  /**
-   * Add a new task to the list
-   */
+  /** Add a new task */
   const addTask = () => {
     if (text.trim() === '') return;
     setTasks(prev => [
@@ -25,9 +24,7 @@ export default function TaskManager() {
     setText('');
   };
 
-  /**
-   * Toggle a task's completed state
-   */
+  /** Toggle a task's completed state */
   const toggleTask = (id) => {
     setTasks(prev =>
       prev.map(task =>
@@ -36,16 +33,12 @@ export default function TaskManager() {
     );
   };
 
-  /**
-   * Delete a task from the list
-   */
+  /** Delete a task */
   const deleteTask = (id) => {
     setTasks(prev => prev.filter(task => task.id !== id));
   };
 
-  /**
-   * Render each task item
-   */
+  /** Render each task item */
   const renderTask = ({ item }) => (
     <Pressable
       onPress={() => toggleTask(item.id)}
@@ -75,7 +68,10 @@ export default function TaskManager() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>📋 Task Manager</Text>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.headerText}>📋 Task Manager</Text>
+      </View>
 
       {/* Input + Add Button */}
       <View style={styles.inputContainer}>
@@ -102,7 +98,13 @@ export default function TaskManager() {
         keyExtractor={(item) => item.id}
         renderItem={renderTask}
         ListEmptyComponent={
-          <Text style={styles.emptyText}>No tasks yet. Add one!</Text>
+          <View style={styles.emptyContainer}>
+            <Image
+              source={{ uri: 'https://cdn-icons-png.flaticon.com/512/4076/4076505.png' }}
+              style={styles.emptyImage}
+            />
+            <Text style={styles.emptyText}>No tasks yet. Add one and get started 🚀</Text>
+          </View>
         }
         contentContainerStyle={tasks.length === 0 && { flexGrow: 1 }}
       />
@@ -113,35 +115,53 @@ export default function TaskManager() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 60,
-    paddingHorizontal: 20,
-    backgroundColor: '#f8f9fa'
+    backgroundColor: '#FBF3D5'
   },
   header: {
+    backgroundColor: '#9CAFAA',
+    paddingVertical: 20,
+    alignItems: 'center',
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 4,
+    elevation: 4
+  },
+  headerText: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center'
+    color: '#FBF3D5'
   },
   inputContainer: {
     flexDirection: 'row',
-    marginBottom: 20
+    marginTop: 20,
+    marginHorizontal: 20,
+    marginBottom: 15
   },
   input: {
     flex: 1,
-    padding: 10,
+    padding: 12,
     backgroundColor: '#fff',
-    borderRadius: 8,
+    borderRadius: 25,
     borderWidth: 1,
-    borderColor: '#ddd'
+    borderColor: '#9CAFAA',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 3,
+    elevation: 2,
+    color: '#333'
   },
   addButton: {
-    backgroundColor: '#007bff',
-    paddingHorizontal: 15,
+    backgroundColor: '#D6A99D',
+    paddingHorizontal: 20,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 10,
-    borderRadius: 8
+    borderRadius: 25,
+    elevation: 3
   },
   addButtonText: {
     color: '#fff',
@@ -150,39 +170,55 @@ const styles = StyleSheet.create({
   taskItem: {
     flexDirection: 'row',
     backgroundColor: '#fff',
-    padding: 12,
-    borderRadius: 8,
+    padding: 14,
+    borderRadius: 10,
     marginBottom: 10,
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ddd'
+    marginHorizontal: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 4,
+    elevation: 2
   },
   taskPressed: {
-    opacity: 0.8
+    opacity: 0.9
   },
   completedTaskItem: {
-    backgroundColor: '#e8f5e9' // light green background for completed tasks
+    backgroundColor: '#D6DAC8'
   },
   taskTextContainer: {
     flex: 1
   },
   taskText: {
-    fontSize: 16
+    fontSize: 16,
+    color: '#333'
   },
   completedText: {
     textDecorationLine: 'line-through',
-    color: 'gray'
+    color: '#666'
   },
   deleteButton: {
     marginLeft: 10
   },
   deleteText: {
     fontSize: 18,
-    color: 'red'
+    color: '#D6A99D'
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1
+  },
+  emptyImage: {
+    width: 120,
+    height: 120,
+    marginBottom: 15
   },
   emptyText: {
     textAlign: 'center',
-    marginTop: 20,
-    color: 'gray'
+    fontSize: 16,
+    color: '#333',
+    paddingHorizontal: 20
   }
 });
